@@ -2,30 +2,35 @@ package routers
 
 import (
 	"encoding/json"
+	// "fmt"
 	"net/http"
 
+	"github.com/RicardoRomeroMedina/pruebaTecnicaTredicom/api"
 	"github.com/RicardoRomeroMedina/pruebaTecnicaTredicom/db"
 	"github.com/RicardoRomeroMedina/pruebaTecnicaTredicom/models"
 )
 
 func AgregarArchivo(w http.ResponseWriter, r *http.Request) {
-	var a models.ModeloArchivo
-	err := json.NewDecoder(r.Body).Decode(&a)
+	var docsMany []interface{}
 
-	archivo := models.ModeloArchivo{
-		IssueNum: a.IssueNum,
-		IssueUrl: a.IssueUrl,
-		IssueNom: a.IssueNom,
-		Autor:    a.Autor,
-		Tags:     a.Tags,
-		Milstone: a.Milstone,
-	}
-	if err != nil {
-		http.Error(w, "No se pudo registrar el arcgivo"+err.Error(), 400)
-		return
+	results := api.ConectarAPIGithub()
+
+	for _, data := range results {
+		archivo := models.ModeloArchivo{
+			IssueNum: data.Number,
+			IssueNom: data.Nombre,
+			IssueUrl: data.HtmlUrl,
+			Autor:    data.User.Login,
+			Labels:   data.Labels,
+			Milstone: struct {
+				Nombre      string "bson:\"nombre\" json:\"nombre,omitempty\""
+				Descripcion string "bson:\"descripcion\" json:\"descripcion,omitempty\""
+			}(data.Milestone),
+		}
+		docsMany = append(docsMany, archivo)
 	}
 
-	_, status, err := db.NuevoArchivo(archivo)
+	_, status, err := db.NuevoArchivo(docsMany)
 
 	if !status {
 		http.Error(w, "No se pudo registrar el archivo"+err.Error(), 400)

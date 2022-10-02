@@ -16,10 +16,12 @@ import (
 func Manejadores() {
 	router := mux.NewRouter()
 
+	//Esta es la ruta para agregar los archivos a la base de datos
 	router.HandleFunc("/agregarArchivo", middlew.ChecarDB(routers.AgregarArchivo)).Methods("POST")
-	// router.HandleFunc("/verInventario", middlew.ChecarDB(routers.VerInventarioRouter)).Methods("GET")
-	// router.HandleFunc("/agregarVenta", middlew.ChecarDB(routers.AgregarVenta)).Methods("POST")
-	// router.HandleFunc("/agregarCredito", middlew.ChecarDB(routers.AgregarCredito)).Methods("POST")
+	//Esta es la ruta para poder ver los archivos que hay en la base de datos
+	router.HandleFunc("/verArchivos", middlew.ChecarDB(routers.VerArchiVosRouter)).Methods("GET")
+	//Esta es la ruta par eliminar todos los archivos de la base de datos
+	router.HandleFunc("/eliminarArchivos", middlew.ChecarDB(routers.EliminarArchivosRouters)).Methods("DELETE")
 
 	PORT := os.Getenv("PORT")
 
