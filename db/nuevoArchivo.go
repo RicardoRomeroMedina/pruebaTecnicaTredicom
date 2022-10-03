@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// Esta funcion es la que se llama para agregar un archivo en la base de datos
+// Esta funcion es la que se llama para agregar todos los archivos en la base de datos
 func NuevoArchivo(a []interface{}) (string, bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()

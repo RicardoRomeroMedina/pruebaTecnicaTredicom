@@ -1,5 +1,6 @@
 package models
 
+//Este modelo es para ver ordenar la informacion del response de la api de github
 type ResponseModel struct {
 	Number  int    `json:"number"`
 	HtmlUrl string `json:"html_url"`

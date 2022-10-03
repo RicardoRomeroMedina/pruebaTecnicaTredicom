@@ -1,4 +1,5 @@
 #docker-compose up [--build]
+#Docker compose para poder levantar el contenedor con el comando docker compose up
 version: "3"
 
 services:

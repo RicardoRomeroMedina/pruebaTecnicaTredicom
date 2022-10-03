@@ -18,6 +18,10 @@ func EliminarArchivosDB() error {
 	//Esta linea crea la conexion a la coleccion en donde se guarda la informacion
 	col := db.Collection("DataRepository")
 
+	/*
+		Esta condicion es necesaria para la funcion DseleteMany sirve para fitrar los datos a eliminar
+		aunque aqui esta vacia ya que lo que se requiere es eliminar todos los datos
+	*/
 	condicion := bson.M{}
 
 	_, err := col.DeleteMany(ctx, condicion)
